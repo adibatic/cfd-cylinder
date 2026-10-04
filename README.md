@@ -97,6 +97,39 @@ Assumptions and their expected effect:
 | smooth, stationary cylinder | no roughness or vibration effects |
 | small initial cross-flow (0.3 m/s) to trigger shedding | removed by discarding the first 0.5 s |
 
+## Domain
+
+Cylinder centre at the origin, flow in +x.
+
+    y = +1.0  +----------------------------------------------------+  top (symmetryPlane)
+              |                +---------+                         |
+    inlet     |                |  _---_  |                         |  outlet
+    x = -1.0  |                | (  O  ) |   ->  wake  ->  ->      |  x = +2.5
+    (U fixed) |                |  -___-  |                         |  (p fixed)
+              |                +---------+                         |
+    y = -1.0  +----------------------------------------------------+  bottom (symmetryPlane)
+
+| Dimension | Value | In diameters |
+|---|---|---|
+| cylinder diameter D | 0.1 m | 1 |
+| inlet distance from centre | 1.0 m | 10 |
+| outlet distance from centre | 2.5 m | 25 |
+| domain half height | 1.0 m | 10 |
+| depth (one cell, 2-D) | 0.01 m | 0.1 |
+| blockage D / height | 5 % | |
+
+| Patch | Type | Location |
+|---|---|---|
+| inlet | patch | x = -1.0 m |
+| outlet | patch | x = +2.5 m |
+| top, bottom | symmetryPlane | y = +/-1.0 m |
+| cylinder | wall | r = 0.05 m |
+| frontAndBack | empty | z = +/-0.005 m (makes the case 2-D) |
+
+Reference values for the force coefficients: U = 10 m/s, rho = 1.225 kg/m^3, lRef = D = 0.1 m, Aref = D x depth = 0.001 m^2.
+
+The mesh is a structured O-grid of 16 blocks: 4 ring blocks around the cylinder (r = 0.05 to 0.075 m, boundary layer), 4 transition blocks to a 0.4 m square box, and 8 outer blocks stretched to the far field. The cells are nearly orthogonal to the wall, small near the cylinder and in the wake, and large far away.
+
 ## Progress
 
 - [x] Day 1: install OpenFOAM and ParaView
