@@ -44,6 +44,11 @@ Run `source .venv/bin/activate` in every new terminal before running the Python 
 | ParaView | 5.10.0-RC1 |
 | Python | 3.14.7 |
 
+## Agent log
+
+| Date | What the agent did wrong | How I caught it | Rule added to CLAUDE.md |
+|---|---|---|---|
+
 ## Progress
 
 - [x] Day 1: install OpenFOAM and ParaView
