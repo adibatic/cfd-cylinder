@@ -13,6 +13,18 @@ This project investigates the accuracy and numerical sensitivity of CFD predicti
 - Python: NumPy, SciPy, Matplotlib, pandas
 - Git and GitHub
 
+## Setup
+
+```bash
+git clone git@github.com:adibatic/cylinder-cfd-vv.git
+cd cylinder-cfd-vv
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Run `source .venv/bin/activate` in every new terminal before running the Python scripts.
+
 ## Progress
 
 - [ ] Day 1: install OpenFOAM, run the official tutorial, record the environment
