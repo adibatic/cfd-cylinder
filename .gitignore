@@ -1,1 +1,17 @@
-tutorial/
+# OpenFOAM run folders (large, regenerate with scripts/make_case.sh)
+runs/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Editors and OS
+.vscode/
+.DS_Store
+*.swp
+
+# ParaView state and OpenFOAM leftovers
+*.foam
+processor*/
+core
