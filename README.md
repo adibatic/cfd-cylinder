@@ -32,6 +32,18 @@ pip install -r requirements.txt
 
 Run `source .venv/bin/activate` in every new terminal before running the Python scripts.
 
+## Environment
+
+| Item | Value |
+|---|---|
+| OS | Ubuntu 22.04.5 LTS |
+| CPU | AMD Ryzen 7 6800HS Creator Edition |
+| Cores | 16 |
+| RAM | 27Gi |
+| OpenFOAM | ESI v2606 |
+| ParaView | 5.10.0-RC1 |
+| Python | 3.14.7 |
+
 ## Progress
 
 - [x] Day 1: install OpenFOAM and ParaView
