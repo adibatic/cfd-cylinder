@@ -185,7 +185,7 @@ Self-paced. Target: the whole project in about two weeks.
 - [ ] Milestone 1: Foundation. OpenFOAM and ParaView work, the repository is reproducible, the project rules are set.
 - [x] Milestone 2: Problem defined. Physics, method, and domain are written down; pytest runs.
 - [x] Milestone 3: Mesh. Three systematically refined meshes pass their tests and checkMesh.
-- [ ] Milestone 4: First flow. The baseline case runs and sheds vortices.
+- [x] Milestone 4: First flow. The baseline case runs and sheds vortices.
 - [ ] Milestone 5: Measurement. C_D, C_L, St, and C_p come from tested code with convergence checks.
 - [ ] Milestone 6: Verification. Mesh and time-step studies give the numerical uncertainty.
 - [ ] Milestone 7: Validation. Results are compared with data I have read, and the differences explained.
