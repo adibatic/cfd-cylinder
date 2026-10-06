@@ -1,0 +1,46 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      k;
+}
+
+// Turbulent kinetic energy (m^2/s^2). Inflow: intensity I = 1 %,
+// k = 1.5 (I U)^2 = 1.5 (0.01 * 10)^2 = 0.015.
+
+dimensions      [0 2 -2 0 0 0 0];
+
+internalField   uniform 0.015;
+
+boundaryField
+{
+    inlet
+    {
+        type            fixedValue;
+        value           uniform 0.015;
+    }
+    outlet
+    {
+        type            inletOutlet;
+        inletValue      uniform 0.015;
+        value           uniform 0.015;
+    }
+    top
+    {
+        type            symmetryPlane;
+    }
+    bottom
+    {
+        type            symmetryPlane;
+    }
+    cylinder
+    {
+        type            kqRWallFunction;
+        value           uniform 0.015;
+    }
+    frontAndBack
+    {
+        type            empty;
+    }
+}

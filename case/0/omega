@@ -1,0 +1,46 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      omega;
+}
+
+// Specific dissipation rate (1/s). Inflow: eddy-viscosity ratio nut/nu = 10,
+// omega = k / nut = 0.015 / (10 * 1.5e-5) = 100.
+
+dimensions      [0 0 -1 0 0 0 0];
+
+internalField   uniform 100;
+
+boundaryField
+{
+    inlet
+    {
+        type            fixedValue;
+        value           uniform 100;
+    }
+    outlet
+    {
+        type            inletOutlet;
+        inletValue      uniform 100;
+        value           uniform 100;
+    }
+    top
+    {
+        type            symmetryPlane;
+    }
+    bottom
+    {
+        type            symmetryPlane;
+    }
+    cylinder
+    {
+        type            omegaWallFunction;
+        value           uniform 100;
+    }
+    frontAndBack
+    {
+        type            empty;
+    }
+}
