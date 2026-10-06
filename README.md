@@ -49,7 +49,13 @@ source .venv/bin/activate
 | RAM | 27Gi |
 | OpenFOAM | ESI v2606 |
 | ParaView | 5.10.0-RC1 |
-| Python | 3.14.7 |
+| Python | 3.10.12 |
+| NumPy | 2.2.6 |
+| SciPy | 1.15.3 |
+| Matplotlib | 3.10.9 |
+| pandas | 2.3.3 |
+| pytest | 9.1.1 |
+| ffmpeg | 4.4.2-0ubuntu0.22.04.1 |
 
 ## Agent log
 
