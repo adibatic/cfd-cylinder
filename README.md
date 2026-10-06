@@ -136,14 +136,14 @@ The mesh is a structured O-grid of 16 blocks: 4 ring blocks around the cylinder 
 
 ## Progress
 
-- [x] Day 1: install OpenFOAM and ParaView
-- [ ] Day 2: physics, geometry, mesh generator, case template, baseline mesh
-<!--
-- [ ] Day 3: baseline run, flow visualization, residuals, forces
-- [ ] Day 4: coarse, medium and fine meshes
-- [ ] Day 5-6: mesh study, compare C_D, C_L and St
-- [ ] Day 7: time-step study
-- [ ] Day 8: C_L(t), FFT, shedding frequency
-- [ ] Day 9: reference data and validation
-- [ ] Day 10: error analysis and engineering interpretation
-- [ ] Day 11-14: final report and GitHub -->
+Self-paced. Target: the whole project in about two weeks.
+
+- [ ] Milestone 1: Foundation. OpenFOAM and ParaView work, the repository is reproducible, the project rules are set.
+- [ ] Milestone 2: Problem defined. Physics, method, and domain are written down; pytest runs.
+- [ ] Milestone 3: Mesh. Three systematically refined meshes pass their tests and checkMesh.
+- [ ] Milestone 4: First flow. The baseline case runs and sheds vortices.
+- [ ] Milestone 5: Measurement. C_D, C_L, St, and C_p come from tested code with convergence checks.
+- [ ] Milestone 6: Verification. Mesh and time-step studies give the numerical uncertainty.
+- [ ] Milestone 7: Validation. Results are compared with data I have read, and the differences explained.
+- [ ] Milestone 8: Package the result. Figures, animation, report, and v1.0 release.
+
