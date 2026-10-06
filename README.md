@@ -4,7 +4,7 @@
 
 ## Objective
 
-This independent project investigates the accuracy and numerical sensitivity of CFD predictions for flow around a circular cylinder. It simulates the unsteady flow with OpenFOAM, shows mesh and time-step independence, compares the results with published reference data, and quantifies the error.
+This project investigates the accuracy and numerical sensitivity of CFD predictions for flow around a circular cylinder. It simulates the unsteady flow with OpenFOAM, shows mesh and time-step independence, compares the results with published reference data, and quantifies the error.
 
 ## Tools
 
@@ -22,15 +22,19 @@ Requires OpenFOAM (ESI release, tested with v2606) and ParaView:
     sudo apt-get install -y openfoam-default paraview
     echo "source /usr/lib/openfoam/openfoam2606/etc/bashrc" >> ~/.bashrc
 
+Run this one-time if the repo does not exist in your directory yet:
 ```bash
-git clone git@github.com:adibatic/cylinder-cfd-vv.git
-cd cylinder-cfd-vv
+git clone git@github.com:adibatic/cfd-vv-cylinder.git
+cd cfd-vv-cylinder
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Run `source .venv/bin/activate` in every new terminal before running the Python scripts.
+Run this command every new terminal:
+```bash
+source .venv/bin/activate
+```
 
 ## Environment
 
@@ -133,7 +137,8 @@ The mesh is a structured O-grid of 16 blocks: 4 ring blocks around the cylinder 
 ## Progress
 
 - [x] Day 1: install OpenFOAM and ParaView
-<!-- - [ ] Day 2: physics, geometry, mesh generator, case template, baseline mesh
+- [ ] Day 2: physics, geometry, mesh generator, case template, baseline mesh
+<!--
 - [ ] Day 3: baseline run, flow visualization, residuals, forces
 - [ ] Day 4: coarse, medium and fine meshes
 - [ ] Day 5-6: mesh study, compare C_D, C_L and St

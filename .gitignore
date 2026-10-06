@@ -15,3 +15,6 @@ __pycache__/
 *.foam
 processor*/
 core
+
+# Tutorial: reference material, not part of my work
+tutorial/
