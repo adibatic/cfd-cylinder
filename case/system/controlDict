@@ -1,0 +1,70 @@
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+
+application     pimpleFoam;
+
+startFrom       startTime;
+startTime       0;
+stopAt          endTime;
+endTime         1.5;            // s: 0.5 s start-up, then 1.0 s of statistics
+
+deltaT          5e-05;          // s, set per run by scripts/make_case.sh
+
+writeControl    runTime;
+writeInterval   0.1;
+purgeWrite      0;
+writeFormat     ascii;
+writePrecision  8;
+writeCompression off;
+timeFormat      general;
+timePrecision   6;
+runTimeModifiable true;
+
+functions
+{
+    // C_D and C_L every time step, from pressure and viscous forces on the cylinder
+    forceCoeffs1
+    {
+        type            forceCoeffs;
+        libs            ("libforces.so");
+        writeControl    timeStep;
+        writeInterval   1;
+        patches         (cylinder);
+        rho             rhoInf;
+        rhoInf          1.225;      // kg/m^3
+        CofR            (0 0 0);
+        dragDir         (1 0 0);
+        liftDir         (0 1 0);
+        pitchAxis       (0 0 1);
+        magUInf         10;         // m/s
+        lRef            0.1;        // m, D
+        Aref            0.001;      // m^2, D x depth
+    }
+
+    // Time-averaged p and U after the start-up, for C_p(theta)
+    fieldAverage1
+    {
+        type            fieldAverage;
+        libs            ("libfieldFunctionObjects.so");
+        timeStart       0.5;
+        writeControl    writeTime;
+        fields
+        (
+            p { mean on; prime2Mean off; base time; }
+            U { mean on; prime2Mean off; base time; }
+        );
+    }
+
+    // y+ of the first cell on the cylinder, written with every time directory
+    yPlus1
+    {
+        type            yPlus;
+        libs            ("libfieldFunctionObjects.so");
+        writeControl    writeTime;
+    }
+}
