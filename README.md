@@ -148,7 +148,7 @@ The mesh is a structured O-grid of 16 blocks: 4 ring blocks around the cylinder 
 Self-paced. Target: the whole project in about two weeks.
 
 - [ ] Milestone 1: Foundation. OpenFOAM and ParaView work, the repository is reproducible, the project rules are set.
-- [ ] Milestone 2: Problem defined. Physics, method, and domain are written down; pytest runs.
+- [x] Milestone 2: Problem defined. Physics, method, and domain are written down; pytest runs.
 - [ ] Milestone 3: Mesh. Three systematically refined meshes pass their tests and checkMesh.
 - [ ] Milestone 4: First flow. The baseline case runs and sheds vortices.
 - [ ] Milestone 5: Measurement. C_D, C_L, St, and C_p come from tested code with convergence checks.
