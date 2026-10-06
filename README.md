@@ -161,6 +161,23 @@ All three pass `checkMesh` ("Mesh OK"). The total volume equals the domain minus
 
 The same view of the three meshes near the cylinder: each refinement multiplies the cells by 1.5 in both directions.
 
+## Baseline run
+
+Medium mesh (17,092 cells), Δt = 5e-5 s, 1.5 s of flow (30,000 time steps), on <cores> cores in <minutes> min.
+
+| Check | Value | Healthy when |
+|---|---|---|
+| solver finished | log ends with `End` | |
+| `nan` in the log; `bounding` after the start-up | 0; 0 (2 events at t < 0.001 s) | 0 |
+| final pressure solve | 38 iterations on average, 70 at most | converges every step |
+| max Courant number, t > 0.5 s | 0.75 | below about 1 |
+| y+ on the cylinder (mean, max) | 1.0, 1.8 | about 1 or below |
+| SST constants | as Menter (1994) | |
+
+![vorticity, medium mesh, t = 1.5 s](results/figures/vorticity_medium_paraview.png)
+
+The wake sheds vortices alternately from the top and bottom of the cylinder: a von Kármán vortex street.
+
 ## Progress
 
 Self-paced. Target: the whole project in about two weeks.
