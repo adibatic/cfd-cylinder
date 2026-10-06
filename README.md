@@ -163,7 +163,7 @@ The same view of the three meshes near the cylinder: each refinement multiplies 
 
 ## Baseline run
 
-Medium mesh (17,092 cells), Δt = 5e-5 s, 1.5 s of flow (30,000 time steps), on <cores> cores in <minutes> min.
+Medium mesh (17,092 cells), Δt = 5e-5 s, 1.5 s of flow (30,000 time steps), on 8 cores in 15.5 min.
 
 | Check | Value | Healthy when |
 |---|---|---|
@@ -178,11 +178,15 @@ Medium mesh (17,092 cells), Δt = 5e-5 s, 1.5 s of flow (30,000 time steps), on 
 
 The wake sheds vortices alternately from the top and bottom of the cylinder: a von Kármán vortex street.
 
+![turbulent kinetic energy k, medium mesh, t = 1.5 s](results/figures/k_medium_paraview.png)
+
+Turbulence is produced in the two shear layers that separate from the cylinder (red, k up to about 13 m^2/s^2) and carried downstream in the wake, where it decays. The free stream carries almost none.
+
 ## Progress
 
 Self-paced. Target: the whole project in about two weeks.
 
-- [ ] Milestone 1: Foundation. OpenFOAM and ParaView work, the repository is reproducible, the project rules are set.
+- [x] Milestone 1: Foundation. OpenFOAM and ParaView work, the repository is reproducible, the project rules are set.
 - [x] Milestone 2: Problem defined. Physics, method, and domain are written down; pytest runs.
 - [x] Milestone 3: Mesh. Three systematically refined meshes pass their tests and checkMesh.
 - [x] Milestone 4: First flow. The baseline case runs and sheds vortices.
