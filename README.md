@@ -11,7 +11,10 @@ This project investigates the accuracy and numerical sensitivity of CFD predicti
 - OpenFOAM
 - ParaView
 - Python: NumPy, SciPy, Matplotlib, pandas
+- pytest
+- ffmpeg (videos)
 - Git and GitHub
+- Claude Code (AI agent, rules in CLAUDE.md)
 
 ## Setup
 
