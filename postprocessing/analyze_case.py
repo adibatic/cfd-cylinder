@@ -215,10 +215,15 @@ def main():
     stats["dt"] = t[1] - t[0]
     stats["cells"] = cell_count(run_dir)
 
+    from pressure import base_pressure, plot_cp, pressure_coefficient
+    theta, cp = pressure_coefficient(run_dir, U)
+    stats["Cp_base"] = base_pressure(theta, cp)
+    plot_cp(args.run, theta, cp, stats["Cp_base"], figs)
+
     print(f"run {args.run}: t = {t[0]:g} to {t[-1]:g} s, dt = {stats['dt']:g} s, "
           f"{stats['cells']} cells")
     for key in ("periods", "f_Hz", "f_cross_Hz", "St", "Cd_mean", "Cd_amp",
-                "Cl_rms", "Cl_amp", "Cd_half_diff_pct"):
+                "Cl_rms", "Cl_amp", "Cp_base", "Cd_half_diff_pct"):
         print(f"  {key:17s} {stats[key]:.5g}")
     ok_periods = stats["periods"] >= 15
     ok_halves = stats["Cd_half_diff_pct"] < 1.0
