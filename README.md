@@ -226,6 +226,17 @@ The coarse run clips slightly negative k (down to about -0.002 m^2/s^2) in 144 o
 
 A fourth, extra-fine mesh (86,956 cells) was not usable: at Δt = 5e-5 s it is unstable (Co of about 1.6 with one PISO pass), and at Δt = 2.5e-5 s its forces carry bursts of high-frequency noise from shear-layer vortices that the URANS model leaves undamped (nut / nu of about 2 at separation). The study therefore uses three meshes.
 
+Grid convergence index after Celik et al. (2008), `verification/gci.py`; h = (A / N)^(1/2), r21 = 1.499, r32 = 1.502.
+
+| Quantity | Convergence | Observed order p | Extrapolated | e_a21 (fine vs medium) | GCI_fine | u_num used |
+|---|---|---|---|---|---|---|
+| St | monotonic | 1.86 | 0.2547 | 1.57 % | 1.74 % | 1.74 % (GCI) |
+| mean C_D | monotonic | 4.42 | 0.9992 | 0.31 % | 0.08 % | 0.08 % (GCI; p far above 2, so quote e_a21 = 0.31 % as the conservative figure) |
+| rms C_L | oscillatory | - | - | 1.81 % | - | 2.6 % (half the spread) |
+| base C_p | oscillatory | - | - | 1.37 % | - | 1.3 % (half the spread) |
+
+All fine-medium differences are below 2 %, as `CLAUDE.md` requires. The coarse mesh is outside the asymptotic range for C_D (p = 4.4) and clips negative k in a few steps; St converges at close to the formal second order.
+
 ## Progress
 
 Self-paced. Target: the whole project in about two weeks.
