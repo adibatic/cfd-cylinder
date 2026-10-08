@@ -211,6 +211,18 @@ Time-averaged C_p on the cylinder from `pMean` (t > 0.5 s), with p_inf the mean 
 
 The flow separates before the top of the cylinder; the nearly constant low pressure behind it is the main source of drag.
 
+## Mesh study
+
+Same case and time step (Δt = 5e-5 s) on three meshes, refinement ratio 1.5 in each direction, statistics over t = 0.5 to 1.5 s.
+
+| Mesh | Cells | St | mean C_D | rms C_L | base C_p | max Co (t > 0.5 s) | mean y+ |
+|---|---|---|---|---|---|---|---|
+| coarse | 7,578 | 0.2388 | 1.022 | 0.793 | -1.314 | 0.47 | 1.45 |
+| medium | 17,092 | 0.2472 | 1.003 | 0.753 | -1.282 | 0.75 | 1.00 |
+| fine | 38,418 | 0.2512 | 1.000 | 0.767 | -1.299 | 1.16 | 0.69 |
+
+The coarse run clips slightly negative k (down to about -0.002 m^2/s^2) in 144 of its 20,000 measured steps; medium and fine never do.
+
 ## Progress
 
 Self-paced. Target: the whole project in about two weeks.
