@@ -223,6 +223,9 @@ Same case and time step (Δt = 5e-5 s) on three meshes, refinement ratio 1.5 in 
 
 The coarse run clips slightly negative k (down to about -0.002 m^2/s^2) in 144 of its 20,000 measured steps; medium and fine never do.
 
+
+A fourth, extra-fine mesh (86,956 cells) was not usable: at Δt = 5e-5 s it is unstable (Co of about 1.6 with one PISO pass), and at Δt = 2.5e-5 s its forces carry bursts of high-frequency noise from shear-layer vortices that the URANS model leaves undamped (nut / nu of about 2 at separation). The study therefore uses three meshes.
+
 ## Progress
 
 Self-paced. Target: the whole project in about two weeks.
