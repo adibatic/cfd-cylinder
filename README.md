@@ -27,8 +27,8 @@ Requires OpenFOAM (ESI release, tested with v2606) and ParaView:
 
 Run this one-time if the repo does not exist in your directory yet:
 ```bash
-git clone git@github.com:adibatic/cfd-vv-cylinder.git
-cd cfd-vv-cylinder
+git clone git@github.com:adibatic/cfd-cylinder.git
+cd cfd-cylinder
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
