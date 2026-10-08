@@ -237,6 +237,19 @@ Grid convergence index after Celik et al. (2008), `verification/gci.py`; h = (A 
 
 All fine-medium differences are below 2 %, as `CLAUDE.md` requires. The coarse mesh is outside the asymptotic range for C_D (p = 4.4) and clips negative k in a few steps; St converges at close to the formal second order.
 
+## Time-step study
+
+Medium mesh at Δt = 1e-4, 5e-5, and 2.5e-5 s (ratio 2), statistics over t = 0.5 to 1.5 s, GCI with h = Δt (`verification/gci.py time`).
+
+| Quantity | 1e-4 s | 5e-5 s | 2.5e-5 s | Observed order | Extrapolated | 5e-5 s off by |
+|---|---|---|---|---|---|---|
+| mean C_D | 1.0189 | 1.0029 | 1.0008 | 2.9 | 1.0005 | 0.25 % |
+| rms C_L | 0.7840 | 0.7527 | 0.7463 | 2.3 | 0.7446 | 1.1 % |
+| base C_p | -1.3257 | -1.2816 | -1.2777 | 3.5 | -1.2773 | 0.34 % |
+| St | 0.2474 | 0.2473 | 0.2479 | oscillatory | - | below 0.4 % |
+
+Max Courant number after the start-up: 1.51, 0.75, 0.38. The step of 1e-4 s runs (just below the stability limit of about 1.6 found in the mesh study) but misses rms C_L by 5 %: stable is not accurate. The step used for the mesh study, 5e-5 s, is within 2 % for every quantity. For mean C_D its time error (0.25 %) is as large as the mesh difference (0.31 %), so the validation adds both.
+
 ## Progress
 
 Self-paced. Target: the whole project in about two weeks.
