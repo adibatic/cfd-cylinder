@@ -1,2 +1,2 @@
-run,periods,f_Hz,f_cross_Hz,St,Cd_mean,Cd_amp,Cl_rms,Cl_amp,Cd_half_diff_pct,dt,cells
-medium,24,24.7305,24.7292,0.247305,1.00349,0.075493,0.75363,1.06337,0.0363704,5e-05,17092
+run,periods,f_Hz,f_cross_Hz,St,Cd_mean,Cd_amp,Cl_rms,Cl_amp,Cd_half_diff_pct,dt,cells,Cp_base
+medium,24,24.7305,24.7292,0.247305,1.00349,0.075493,0.75363,1.06337,0.0363704,5e-05,17092,-1.28309
