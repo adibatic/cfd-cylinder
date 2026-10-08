@@ -189,6 +189,16 @@ The wake sheds vortices alternately from the top and bottom of the cylinder: a v
 
 Turbulence is produced in the two shear layers that separate from the cylinder (red, k up to about 13 m^2/s^2) and carried downstream in the wake, where it decays. The free stream carries almost none.
 
+## Forces and shedding
+
+`postprocessing/analyze_case.py`: statistics over whole shedding periods after t = 0.5 s; St from the peak of the Hann-windowed spectrum of C_L, refined between FFT bins and checked against the zero-crossing frequency. Tested against signals with exact answers (`tests/test_analysis.py`).
+
+| Run | Periods | St | mean C_D | rms C_L | C_D halves differ |
+|---|---|---|---|---|---|
+| medium | 24 | 0.2472 | 1.003 | 0.753 | 0.04 % |
+
+![medium force history](results/figures/medium_coefficients.png)
+
 ## Progress
 
 Self-paced. Target: the whole project in about two weeks.
