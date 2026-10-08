@@ -259,7 +259,7 @@ Self-paced. Target: the whole project in about two weeks.
 - [x] Milestone 3: Mesh. Three systematically refined meshes pass their tests and checkMesh.
 - [x] Milestone 4: First flow. The baseline case runs and sheds vortices.
 - [x] Milestone 5: Measurement. C_D, C_L, St, and C_p come from tested code with convergence checks.
-- [ ] Milestone 6: Verification. Mesh and time-step studies give the numerical uncertainty.
+- [x] Milestone 6: Verification. Mesh and time-step studies give the numerical uncertainty.
 - [ ] Milestone 7: Validation. Results are compared with data I have read, and the differences explained.
 - [ ] Milestone 8: Package the result. Figures, animation, report, and v1.0 release.
 
