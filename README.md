@@ -199,6 +199,18 @@ Turbulence is produced in the two shear layers that separate from the cylinder (
 
 ![medium force history](results/figures/medium_coefficients.png)
 
+## Pressure
+
+Time-averaged C_p on the cylinder from `pMean` (t > 0.5 s), with p_inf the mean pressure on the inlet patch (`postprocessing/pressure.py`, tested against potential flow). C_p = 1.00 at the front stagnation point confirms the reference pressure.
+
+| Run | C_p minimum (angle) | base C_p (180 deg) |
+|---|---|---|
+| medium | -2.05 (77 deg) | -1.28 |
+
+![medium C_p](results/figures/medium_cp.png)
+
+The flow separates before the top of the cylinder; the nearly constant low pressure behind it is the main source of drag.
+
 ## Progress
 
 Self-paced. Target: the whole project in about two weeks.
