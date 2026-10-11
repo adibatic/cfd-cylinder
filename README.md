@@ -1,66 +1,96 @@
+<div align="center">
+
 # CFD: Circular Cylinder
 
 **Verification and Validation** of CFD Predictions for Flow Around a Circular Cylinder Using OpenFOAM
 
+![tests](https://github.com/adibatic/cfd-cylinder/actions/workflows/tests.yml/badge.svg)
+![OpenFOAM](https://img.shields.io/badge/OpenFOAM-ESI_v2606-2b6cb0)
+![Python](https://img.shields.io/badge/Python-3.10-3776ab?logo=python&logoColor=white)
+![Re](https://img.shields.io/badge/Re-66%2C667-555555)
+
+<img src="results/animations/vorticity_medium-anim.gif" width="800" alt="Vorticity behind the cylinder: vortices shed alternately from the top and bottom">
+
+<sub>Vorticity behind the cylinder, medium mesh. Red turns counter-clockwise, blue clockwise. Two shedding periods, looped.</sub>
+
+[Key finding](#key-finding) · [Results](#results-at-a-glance) · [Gallery](#gallery) · [How it works](#how-it-works) · [Report](report/report.md) · [Setup](#setup)
+
+</div>
+
+## Key finding
+
+> [!NOTE]
+> On three systematically refined meshes and three time steps, the 2-D URANS k-ω SST model predicts **St = 0.251 ± 0.004** and **mean C<sub>D</sub> = 1.000 ± 0.004** for the cylinder at Re = 66,667, with every mesh and time-step difference below 2 %. The numerical error is small and known; the comparison with experiments is in progress.
+
+## Results at a glance
+
+| Quantity | Simulation | Numerical uncertainty | Experiment | Difference E | Verdict |
+|---|---|---|---|---|---|
+| St | **0.2512** | ± 0.0041 (1.6 %) | ⏳ pending | ⏳ | ⏳ |
+| mean C<sub>D</sub> | **1.000** | ± 0.004 (0.4 %) | ⏳ pending | ⏳ | ⏳ |
+| rms C<sub>L</sub> | **0.766** | ± 0.023 (3.0 %) | ⏳ pending | ⏳ | ⏳ |
+| base C<sub>p</sub> | **-1.299** | ± 0.017 (1.3 %) | ⏳ pending | ⏳ | ⏳ |
+
+<sub>Fine mesh (38,418 cells), Δt = 5e-5 s, statistics over t = 0.5 to 1.5 s. U<sub>num</sub> combines the mesh study (GCI or half the spread) and the time-step study. The experimental values are added from sources I have read (see Validation).</sub>
+
+| Check | Required | Result |
+|---|---|---|
+| tests | all pass | ✅ 30 passed, 1 skipped (reference data not added yet) |
+| checkMesh | "Mesh OK" on every mesh | ✅ |
+| shedding periods per run | at least 15 | ✅ 23 or more |
+| C<sub>D</sub>, first half vs second half | below 1 % | ✅ at most 0.10 % |
+| mesh and time-step differences | below 2 % | ✅ at most 1.6 % (mesh) and 1.0 % (time step) |
+
+## Gallery
+
+<table>
+  <tr>
+    <td width="50%"><img src="results/figures/mesh_coarse.png" alt="O-grid mesh around the cylinder"><br><sub><b>Mesh.</b> The O-grid near the cylinder, coarse level.</sub></td>
+    <td width="50%"><img src="results/figures/mesh_study.png" alt="Mesh study"><br><sub><b>Mesh study.</b> Three meshes converge toward the extrapolated value.</sub></td>
+  </tr>
+  <tr>
+    <td><img src="results/figures/cl_three_meshes.png" alt="Lift coefficient on three meshes"><br><sub><b>Lift.</b> The lift coefficient on three meshes: same amplitude and period.</sub></td>
+    <td><img src="results/figures/medium_spectrum.png" alt="Spectrum of the lift coefficient"><br><sub><b>Shedding frequency.</b> The peak of the lift spectrum gives St.</sub></td>
+  </tr>
+  <tr>
+    <td><img src="results/figures/cp_three_meshes.png" alt="Pressure coefficient around the cylinder"><br><sub><b>Pressure.</b> The mean pressure coefficient around the cylinder, against potential flow.</sub></td>
+    <td><img src="results/figures/k_medium_paraview.png" alt="Turbulent kinetic energy behind the cylinder"><br><sub><b>Turbulence.</b> Turbulent kinetic energy, made in the shear layers and carried down the wake.</sub></td>
+  </tr>
+</table>
+
+## How it works
+
+```mermaid
+flowchart TB
+    subgraph S["1 · Simulate"]
+        direction LR
+        M["<b>Mesh</b><br>make_blockmesh.py"] --> C["<b>Case</b><br>make_case.sh"] --> R["<b>Run</b><br>run_case.sh"]
+    end
+    subgraph Q["2 · Check"]
+        direction LR
+        P["<b>Measure</b><br>analyze_case.py"] --> V["<b>Verify</b><br>gci.py"] --> X["<b>Validate</b><br>compare.py"]
+    end
+    S --> Q
+```
+
+| Stage | What it does | Checked by |
+|---|---|---|
+| Mesh | the O-grid at three refinement levels | pytest, checkMesh |
+| Case | copies the case template, adds the mesh | checkMesh: "Mesh OK" |
+| Run | pimpleFoam, URANS k-ω SST | Courant number, y+ |
+| Measure | C<sub>D</sub>, C<sub>L</sub>, St, and C<sub>p</sub> over whole shedding periods | pytest, 15 periods, halves within 1 % |
+| Verify | mesh and time-step studies, the grid convergence index | differences below 2 % |
+| Validate | the comparison with experiments | U<sub>val</sub> from both uncertainties |
+
+Verification (are the equations solved correctly?) comes before validation (are they the right equations?).
+
+## Contents
+
+[Objective](#objective) · [Problem](#problem) · [Method](#method) · [Domain](#domain) · [Mesh](#mesh) · [Baseline run](#baseline-run) · [Forces and shedding](#forces-and-shedding) · [Pressure](#pressure) · [Mesh study](#mesh-study) · [Time-step study](#time-step-study) · [Validation](#validation) · [Discussion](#discussion) · [Tools](#tools) · [Setup](#setup) · [Repository layout](#repository-layout) · [References](#references) · [Environment](#environment) · [Agent log](#agent-log) · [Progress](#progress)
+
 ## Objective
 
 This project investigates the accuracy and numerical sensitivity of CFD predictions for flow around a circular cylinder. It simulates the unsteady flow with OpenFOAM, shows mesh and time-step independence, compares the results with published reference data, and quantifies the error.
-
-## Tools
-
-- OpenFOAM
-- ParaView
-- Python: NumPy, SciPy, Matplotlib, pandas
-- pytest
-- ffmpeg (videos)
-- Git and GitHub
-- Claude Code (AI agent, rules in CLAUDE.md)
-
-## Setup
-
-Requires OpenFOAM (ESI release, tested with v2606) and ParaView:
-
-    curl https://dl.openfoam.com/add-debian-repo.sh | sudo bash
-    sudo apt-get update
-    sudo apt-get install -y openfoam-default paraview
-    echo "source /usr/lib/openfoam/openfoam2606/etc/bashrc" >> ~/.bashrc
-
-Run this one-time if the repo does not exist in your directory yet:
-```bash
-git clone git@github.com:adibatic/cfd-cylinder.git
-cd cfd-cylinder
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-```
-
-Run this command every new terminal:
-```bash
-source .venv/bin/activate
-```
-
-## Environment
-
-| Item | Value |
-|---|---|
-| OS | Ubuntu 22.04.5 LTS |
-| CPU | AMD Ryzen 7 6800HS Creator Edition |
-| Cores | 16 |
-| RAM | 27Gi |
-| OpenFOAM | ESI v2606 |
-| ParaView | 5.10.0-RC1 |
-| Python | 3.10.12 |
-| NumPy | 2.2.6 |
-| SciPy | 1.15.3 |
-| Matplotlib | 3.10.9 |
-| pandas | 2.3.3 |
-| pytest | 9.1.1 |
-| ffmpeg | 4.4.2-0ubuntu0.22.04.1 |
-
-## Agent log
-
-| Date | What the agent did wrong | How I caught it | Rule added to CLAUDE.md |
-|---|---|---|---|
 
 ## Problem
 
@@ -195,7 +225,7 @@ Turbulence is produced in the two shear layers that separate from the cylinder (
 
 | Run | Periods | St | mean C_D | rms C_L | C_D halves differ |
 |---|---|---|---|---|---|
-| medium | 24 | 0.2472 | 1.003 | 0.753 | 0.04 % |
+| medium | 24 | 0.2473 | 1.003 | 0.754 | 0.04 % |
 
 ![medium force history](results/figures/medium_coefficients.png)
 
@@ -217,9 +247,9 @@ Same case and time step (Δt = 5e-5 s) on three meshes, refinement ratio 1.5 in 
 
 | Mesh | Cells | St | mean C_D | rms C_L | base C_p | max Co (t > 0.5 s) | mean y+ |
 |---|---|---|---|---|---|---|---|
-| coarse | 7,578 | 0.2388 | 1.022 | 0.793 | -1.314 | 0.47 | 1.45 |
-| medium | 17,092 | 0.2472 | 1.003 | 0.753 | -1.282 | 0.75 | 1.00 |
-| fine | 38,418 | 0.2512 | 1.000 | 0.767 | -1.299 | 1.16 | 0.69 |
+| coarse | 7,578 | 0.2388 | 1.022 | 0.792 | -1.314 | 0.47 | 1.45 |
+| medium | 17,092 | 0.2473 | 1.003 | 0.754 | -1.283 | 0.75 | 1.00 |
+| fine | 38,418 | 0.2512 | 1.000 | 0.766 | -1.299 | 1.16 | 0.69 |
 
 The coarse run clips slightly negative k (down to about -0.002 m^2/s^2) in 144 of its 20,000 measured steps; medium and fine never do.
 
@@ -230,12 +260,12 @@ Grid convergence index after Celik et al. (2008), `verification/gci.py`; h = (A 
 
 | Quantity | Convergence | Observed order p | Extrapolated | e_a21 (fine vs medium) | GCI_fine | u_num used |
 |---|---|---|---|---|---|---|
-| St | monotonic | 1.86 | 0.2547 | 1.57 % | 1.74 % | 1.74 % (GCI) |
-| mean C_D | monotonic | 4.42 | 0.9992 | 0.31 % | 0.08 % | 0.08 % (GCI; p far above 2, so quote e_a21 = 0.31 % as the conservative figure) |
-| rms C_L | oscillatory | - | - | 1.81 % | - | 2.6 % (half the spread) |
-| base C_p | oscillatory | - | - | 1.37 % | - | 1.3 % (half the spread) |
+| St | monotonic | 1.92 | 0.2545 | 1.54 % | 1.63 % | 1.63 % (GCI) |
+| mean C_D | monotonic | 3.78 | 0.9985 | 0.39 % | 0.14 % | 0.14 % (GCI; p far above 2, so quote e_a21 = 0.39 % as the conservative figure) |
+| rms C_L | oscillatory | - | - | 1.64 % | - | 2.5 % (half the spread) |
+| base C_p | oscillatory | - | - | 1.20 % | - | 1.2 % (half the spread) |
 
-All fine-medium differences are below 2 %, as `CLAUDE.md` requires. The coarse mesh is outside the asymptotic range for C_D (p = 4.4) and clips negative k in a few steps; St converges at close to the formal second order.
+All fine-medium differences are below 2 % (largest 1.64 %), as `CLAUDE.md` requires. The coarse mesh is outside the asymptotic range for C_D (p = 3.8) and clips negative k in a few steps; St converges at close to the formal second order (p = 1.9).
 
 ## Time-step study
 
@@ -243,14 +273,121 @@ Medium mesh at Δt = 1e-4, 5e-5, and 2.5e-5 s (ratio 2), statistics over t = 0.5
 
 | Quantity | 1e-4 s | 5e-5 s | 2.5e-5 s | Observed order | Extrapolated | 5e-5 s off by |
 |---|---|---|---|---|---|---|
-| mean C_D | 1.0189 | 1.0029 | 1.0008 | 2.9 | 1.0005 | 0.25 % |
-| rms C_L | 0.7840 | 0.7527 | 0.7463 | 2.3 | 0.7446 | 1.1 % |
-| base C_p | -1.3257 | -1.2816 | -1.2777 | 3.5 | -1.2773 | 0.34 % |
-| St | 0.2474 | 0.2473 | 0.2479 | oscillatory | - | below 0.4 % |
+| mean C_D | 1.0190 | 1.0035 | 1.0008 | 2.5 | 1.0003 | 0.32 % |
+| rms C_L | 0.7843 | 0.7536 | 0.7464 | 2.1 | 0.7441 | 1.27 % |
+| base C_p | -1.3263 | -1.2831 | -1.2778 | 3.0 | -1.2771 | 0.47 % |
+| St | 0.2474 | 0.2473 | 0.2479 | oscillatory | - | below 0.3 % |
 
-Max Courant number after the start-up: 1.51, 0.75, 0.38. The step of 1e-4 s runs (just below the stability limit of about 1.6 found in the mesh study) but misses rms C_L by 5 %: stable is not accurate. The step used for the mesh study, 5e-5 s, is within 2 % for every quantity. For mean C_D its time error (0.25 %) is as large as the mesh difference (0.31 %), so the validation adds both.
+Max Courant number after the start-up: about 1.5, 0.75, and 0.38 (it scales with Δt). The step of 1e-4 s runs (just below the stability limit of about 1.6 found in the mesh study) but misses rms C_L by 5 %: stable is not accurate. The step used for the mesh study, 5e-5 s, is within 2 % for every quantity. For mean C_D its time error (0.32 %) is as large as the mesh difference (0.39 %), so the validation adds both.
+
+## Validation
+
+`validation/compare.py` compares the fine-mesh result S with an experimental value D for C_D, St, rms C_L, and base C_p:
+
+- comparison error E = S - D;
+- numerical uncertainty U_num = sqrt(u_mesh^2 + u_time^2), from the mesh study (GCI or half the spread) and the time-step study (1.25 times the distance of the 5e-5 s result from the extrapolated value, a project choice);
+- validation uncertainty U_val = sqrt(U_num^2 + U_D^2), a simplified form of ASME V&V 20 that leaves out the input uncertainty U_input (not estimated in this project).
+
+If |E| is within U_val, no model error can be shown at this level of uncertainty; if |E| is larger, the difference is model error.
+
+**Status: in progress.** The experimental values go into `validation/reference_data.csv` only from sources I have read, each with its location in the source; `tests/test_validation.py` rejects a row without a source. Then:
+
+    python3 validation/compare.py --run fine
+
+## Discussion
+
+**Numerical uncertainty.** Combining the mesh and time-step studies, the fine-mesh results carry a numerical uncertainty of 1.6 % for St, 0.4 % for mean C_D, 3.0 % for rms C_L, and 1.3 % for base C_p. Every difference between the two finest meshes and between the two smallest time steps is below 2 %, so the numerical error is small and known. rms C_L is the least certain: it converges oscillatorily with refinement.
+
+**What the comparison with experiments will have to explain.** The model errors are not bounded by these studies, because they are the same on every mesh: the 2-D simplification (2-D URANS tends to over-predict mean drag and rms lift, because the shed vortices are perfectly coherent along the span), the turbulence model treating the laminar separating boundary layer as turbulent, the decay of the inflow turbulence before it reaches the cylinder, and 5 % blockage without correction. The validation will show which of these dominates.
+
+## Tools
+
+- OpenFOAM
+- ParaView
+- Python: NumPy, SciPy, Matplotlib, pandas
+- pytest
+- ffmpeg (videos)
+- Git and GitHub
+- Claude Code (AI agent, rules in CLAUDE.md)
+
+## Setup
+
+Requires OpenFOAM (ESI release, tested with v2606) and ParaView:
+
+    curl https://dl.openfoam.com/add-debian-repo.sh | sudo bash
+    sudo apt-get update
+    sudo apt-get install -y openfoam-default paraview
+    echo "source /usr/lib/openfoam/openfoam2606/etc/bashrc" >> ~/.bashrc
+
+Run this one-time if the repo does not exist in your directory yet:
+```bash
+git clone git@github.com:adibatic/cfd-cylinder.git
+cd cfd-cylinder
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+Run this command every new terminal:
+```bash
+source .venv/bin/activate
+```
+
+## Repository layout
+
+    mesh/             make_blockmesh.py: the O-grid at three refinement levels
+    case/             OpenFOAM case template (0/, constant/, system/)
+    scripts/          foam_env.sh, make_case.sh, run_case.sh
+    postprocessing/   C_D, C_L, St, C_p, figures, and the animation
+    verification/     grid convergence index
+    validation/       reference data and the comparison
+    tests/            pytest checks against exact answers (run: pytest)
+    results/          figures, tables, and animations (all committed)
+    report/           final report
+    runs/, media/     OpenFOAM runs and videos (generated, not tracked)
+
+## References
+
+- Celik, I. B., Ghia, U., Roache, P. J., Freitas, C. J., Coleman, H., & Raad, P. E. (2008). Procedure for estimation and reporting of uncertainty due to discretization in CFD applications. Journal of Fluids Engineering, 130(7), 078001.
+- Menter, F. R. (1994). Two-equation eddy-viscosity turbulence models for engineering applications. AIAA Journal, 32(8), 1598-1605.
+
+## Environment
+
+<details>
+<summary>Show</summary>
+
+| Item | Value |
+|---|---|
+| OS | Ubuntu 22.04.5 LTS |
+| CPU | AMD Ryzen 7 6800HS Creator Edition |
+| Cores | 16 |
+| RAM | 27Gi |
+| OpenFOAM | ESI v2606 |
+| ParaView | 5.10.0-RC1 |
+| Python | 3.10.12 |
+| NumPy | 2.2.6 |
+| SciPy | 1.15.3 |
+| Matplotlib | 3.10.9 |
+| pandas | 2.3.3 |
+| pytest | 9.1.1 |
+| ffmpeg | 4.4.2-0ubuntu0.22.04.1 |
+
+</details>
+
+## Agent log
+
+<details>
+<summary>Show</summary>
+
+| Date | What the agent did wrong | How I caught it | Rule added to CLAUDE.md |
+|---|---|---|---|
+
+</details>
 
 ## Progress
+
+<details>
+<summary>Show</summary>
 
 Self-paced. Target: the whole project in about two weeks.
 
@@ -263,3 +400,4 @@ Self-paced. Target: the whole project in about two weeks.
 - [ ] Milestone 7: Validation. Results are compared with data I have read, and the differences explained.
 - [ ] Milestone 8: Package the result. Figures, animation, report, and v1.0 release.
 
+</details>
