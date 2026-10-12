@@ -2,7 +2,7 @@
 
 # CFD: Circular Cylinder
 
-**Verification and Validation** of CFD Predictions for Flow Around a Circular Cylinder Using OpenFOAM
+**Verification** of CFD Predictions for Flow Around a Circular Cylinder Using OpenFOAM
 
 ![tests](https://github.com/adibatic/cfd-cylinder/actions/workflows/tests.yml/badge.svg)
 ![OpenFOAM](https://img.shields.io/badge/OpenFOAM-ESI_v2606-2b6cb0)
@@ -20,22 +20,22 @@
 ## Key finding
 
 > [!NOTE]
-> On three systematically refined meshes and three time steps, the 2-D URANS k-ω SST model predicts **St = 0.251 ± 0.004** and **mean C<sub>D</sub> = 1.000 ± 0.004** for the cylinder at Re = 66,667, with every mesh and time-step difference below 2 %. The numerical error is small and known; the comparison with experiments is in progress.
+> On three systematically refined meshes and three time steps, the 2-D URANS k-ω SST model predicts **St = 0.251 ± 0.004** and **mean C<sub>D</sub> = 1.000 ± 0.004** for the cylinder at Re = 66,667, with every mesh and time-step difference below 2 %. The numerical error is small and known. Validation against experiments is not part of this project (see [Validation](#validation)).
 
 ## Results at a glance
 
-| Quantity | Simulation | Numerical uncertainty | Experiment | Difference E | Verdict |
-|---|---|---|---|---|---|
-| St | **0.2512** | ± 0.0041 (1.6 %) | ⏳ pending | ⏳ | ⏳ |
-| mean C<sub>D</sub> | **1.000** | ± 0.004 (0.4 %) | ⏳ pending | ⏳ | ⏳ |
-| rms C<sub>L</sub> | **0.766** | ± 0.023 (3.0 %) | ⏳ pending | ⏳ | ⏳ |
-| base C<sub>p</sub> | **-1.299** | ± 0.017 (1.3 %) | ⏳ pending | ⏳ | ⏳ |
+| Quantity | Simulation | Numerical uncertainty |
+|---|---|---|
+| St | **0.2512** | ± 0.0041 (1.6 %) |
+| mean C<sub>D</sub> | **1.000** | ± 0.004 (0.4 %) |
+| rms C<sub>L</sub> | **0.766** | ± 0.023 (3.0 %) |
+| base C<sub>p</sub> | **-1.299** | ± 0.017 (1.3 %) |
 
-<sub>Fine mesh (38,418 cells), Δt = 5e-5 s, statistics over t = 0.5 to 1.5 s. U<sub>num</sub> combines the mesh study (GCI or half the spread) and the time-step study. The experimental values are added from sources I have read (see Validation).</sub>
+<sub>Fine mesh (38,418 cells), Δt = 5e-5 s, statistics over t = 0.5 to 1.5 s. U<sub>num</sub> combines the mesh study (GCI or half the spread) and the time-step study.</sub>
 
 | Check | Required | Result |
 |---|---|---|
-| tests | all pass | ✅ 30 passed, 1 skipped (reference data not added yet) |
+| tests | all pass | ✅ 30 passed, 1 skipped (no validation reference data) |
 | checkMesh | "Mesh OK" on every mesh | ✅ |
 | shedding periods per run | at least 15 | ✅ 23 or more |
 | C<sub>D</sub>, first half vs second half | below 1 % | ✅ at most 0.10 % |
@@ -68,7 +68,7 @@ flowchart TB
     end
     subgraph Q["2 · Check"]
         direction LR
-        P["<b>Measure</b><br>analyze_case.py"] --> V["<b>Verify</b><br>gci.py"] --> X["<b>Validate</b><br>compare.py"]
+        P["<b>Measure</b><br>analyze_case.py"] --> V["<b>Verify</b><br>gci.py"]
     end
     S --> Q
 ```
@@ -80,9 +80,8 @@ flowchart TB
 | Run | pimpleFoam, URANS k-ω SST | Courant number, y+ |
 | Measure | C<sub>D</sub>, C<sub>L</sub>, St, and C<sub>p</sub> over whole shedding periods | pytest, 15 periods, halves within 1 % |
 | Verify | mesh and time-step studies, the grid convergence index | differences below 2 % |
-| Validate | the comparison with experiments | U<sub>val</sub> from both uncertainties |
 
-Verification (are the equations solved correctly?) comes before validation (are they the right equations?).
+This project covers verification: are the equations solved correctly? Validation, whether they are the right equations, needs a comparison with experiments and is not part of it; the tool for it is prepared (see [Validation](#validation)).
 
 ## Contents
 
@@ -90,7 +89,7 @@ Verification (are the equations solved correctly?) comes before validation (are 
 
 ## Objective
 
-This project investigates the accuracy and numerical sensitivity of CFD predictions for flow around a circular cylinder. It simulates the unsteady flow with OpenFOAM, shows mesh and time-step independence, compares the results with published reference data, and quantifies the error.
+This project investigates the accuracy and numerical sensitivity of CFD predictions for flow around a circular cylinder. It simulates the unsteady flow with OpenFOAM, shows mesh and time-step independence, and quantifies the numerical error. Comparing the results with published experiments (validation) is outside its scope.
 
 ## Problem
 
@@ -126,7 +125,7 @@ Time scales: one flow-through of the domain takes 0.35 s, one shedding period ab
 - **Solver:** OpenFOAM `pimpleFoam` (transient, PIMPLE pressure-velocity coupling).
 - **Forces:** pressure and viscous stress integrated over the cylinder every time step (`forceCoeffs`).
 - **Verification:** three systematically refined meshes with the grid convergence index (Celik et al. 2008), three time steps, statistical convergence checks.
-- **Validation:** comparison of C_D, St, rms C_L and base C_p with published experiments.
+- **Validation:** not performed. `validation/compare.py` is prepared to compare C_D, St, rms C_L and base C_p with published experiments.
 
 Assumptions and their expected effect:
 
@@ -278,11 +277,13 @@ Medium mesh at Δt = 1e-4, 5e-5, and 2.5e-5 s (ratio 2), statistics over t = 0.5
 | base C_p | -1.3263 | -1.2831 | -1.2778 | 3.0 | -1.2771 | 0.47 % |
 | St | 0.2474 | 0.2473 | 0.2479 | oscillatory | - | below 0.3 % |
 
-Max Courant number after the start-up: about 1.5, 0.75, and 0.38 (it scales with Δt). The step of 1e-4 s runs (just below the stability limit of about 1.6 found in the mesh study) but misses rms C_L by 5 %: stable is not accurate. The step used for the mesh study, 5e-5 s, is within 2 % for every quantity. For mean C_D its time error (0.32 %) is as large as the mesh difference (0.39 %), so the validation adds both.
+Max Courant number after the start-up: about 1.5, 0.75, and 0.38 (it scales with Δt). The step of 1e-4 s runs (just below the stability limit of about 1.6 found in the mesh study) but misses rms C_L by 5 %: stable is not accurate. The step used for the mesh study, 5e-5 s, is within 2 % for every quantity. For mean C_D its time error (0.32 %) is as large as the mesh difference (0.39 %), so U_num adds both.
 
 ## Validation
 
-`validation/compare.py` compares the fine-mesh result S with an experimental value D for C_D, St, rms C_L, and base C_p:
+**Not performed.** This project stops at verification: it shows that the equations are solved accurately, not that they describe real air. The comparison needs experimental values, which go into `validation/reference_data.csv` only from sources I have read, each with its location in the source; `tests/test_validation.py` rejects a row without a source. No such values have been added, so no comparison is reported.
+
+The tool is prepared for a later version. `validation/compare.py` compares the fine-mesh result S with an experimental value D for C_D, St, rms C_L, and base C_p:
 
 - comparison error E = S - D;
 - numerical uncertainty U_num = sqrt(u_mesh^2 + u_time^2), from the mesh study (GCI or half the spread) and the time-step study (1.25 times the distance of the 5e-5 s result from the extrapolated value, a project choice);
@@ -290,7 +291,7 @@ Max Courant number after the start-up: about 1.5, 0.75, and 0.38 (it scales with
 
 If |E| is within U_val, no model error can be shown at this level of uncertainty; if |E| is larger, the difference is model error.
 
-**Status: in progress.** The experimental values go into `validation/reference_data.csv` only from sources I have read, each with its location in the source; `tests/test_validation.py` rejects a row without a source. Then:
+Once reference data are added:
 
     python3 validation/compare.py --run fine
 
@@ -298,7 +299,7 @@ If |E| is within U_val, no model error can be shown at this level of uncertainty
 
 **Numerical uncertainty.** Combining the mesh and time-step studies, the fine-mesh results carry a numerical uncertainty of 1.6 % for St, 0.4 % for mean C_D, 3.0 % for rms C_L, and 1.3 % for base C_p. Every difference between the two finest meshes and between the two smallest time steps is below 2 %, so the numerical error is small and known. rms C_L is the least certain: it converges oscillatorily with refinement.
 
-**What the comparison with experiments will have to explain.** The model errors are not bounded by these studies, because they are the same on every mesh: the 2-D simplification (2-D URANS tends to over-predict mean drag and rms lift, because the shed vortices are perfectly coherent along the span), the turbulence model treating the laminar separating boundary layer as turbulent, the decay of the inflow turbulence before it reaches the cylinder, and 5 % blockage without correction. The validation will show which of these dominates.
+**What the verification does not cover.** The model errors are not bounded by these studies, because they are the same on every mesh: the 2-D simplification (2-D URANS tends to over-predict mean drag and rms lift, because the shed vortices are perfectly coherent along the span), the turbulence model treating the laminar separating boundary layer as turbulent, the decay of the inflow turbulence before it reaches the cylinder, and 5 % blockage without correction. Only a comparison with experiments can show how large they are and which dominates.
 
 ## Tools
 
@@ -340,7 +341,7 @@ source .venv/bin/activate
     scripts/          foam_env.sh, make_case.sh, run_case.sh
     postprocessing/   C_D, C_L, St, C_p, figures, and the animation
     verification/     grid convergence index
-    validation/       reference data and the comparison
+    validation/       the comparison with experiments (prepared, not run)
     tests/            pytest checks against exact answers (run: pytest)
     results/          figures, tables, and animations (all committed)
     report/           final report; presentation.pdf, a 9-slide talk for non-specialists
@@ -397,7 +398,7 @@ Self-paced. Target: the whole project in about two weeks.
 - [x] Milestone 4: First flow. The baseline case runs and sheds vortices.
 - [x] Milestone 5: Measurement. C_D, C_L, St, and C_p come from tested code with convergence checks.
 - [x] Milestone 6: Verification. Mesh and time-step studies give the numerical uncertainty.
-- [ ] Milestone 7: Validation. Results are compared with data I have read, and the differences explained.
+- [ ] Milestone 7: Validation. Not part of this version; the comparison tool is prepared for future work.
 - [ ] Milestone 8: Package the result. Figures, animation, report, and v1.0 release.
 
 </details>

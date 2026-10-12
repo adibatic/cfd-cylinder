@@ -1,12 +1,12 @@
-# Verification and Validation of CFD Predictions for Flow Around a Circular Cylinder Using OpenFOAM
+# Verification of CFD Predictions for Flow Around a Circular Cylinder Using OpenFOAM
 
 Author: Adriel
 Date: 12 October 2026
-Status: verification complete; validation against experiments in progress.
+Scope: verification. Validation against experiments is not part of this report.
 
 ## 1. Abstract
 
-Air at 10 m/s flows past a smooth circular cylinder of diameter 0.1 m (Re = 66,667, subcritical). The unsteady 2-D flow was computed with OpenFOAM v2606 (`pimpleFoam`, URANS with the k-ω SST model) on systematically refined O-grids of 7,578, 17,092, and 38,418 cells, and with three time steps (1e-4, 5e-5, and 2.5e-5 s). Every run sheds vortices regularly, gives at least 23 whole shedding periods, and passes a statistical check (mean drag of the two halves within 0.10 %). The grid convergence index (Celik et al., 2008) and the time-step study give the numerical uncertainty of each result. On the finest mesh the model predicts a Strouhal number St = 0.251 ± 0.004 and a mean drag coefficient C_D = 1.000 ± 0.004, an rms lift coefficient of 0.766 ± 0.023, and a base pressure coefficient of -1.299 ± 0.017; every difference between the two finest meshes and between the two smallest time steps is below 2 %. The comparison with experiments, which will show the model error, is the remaining step.
+Air at 10 m/s flows past a smooth circular cylinder of diameter 0.1 m (Re = 66,667, subcritical). The unsteady 2-D flow was computed with OpenFOAM v2606 (`pimpleFoam`, URANS with the k-ω SST model) on systematically refined O-grids of 7,578, 17,092, and 38,418 cells, and with three time steps (1e-4, 5e-5, and 2.5e-5 s). Every run sheds vortices regularly, gives at least 23 whole shedding periods, and passes a statistical check (mean drag of the two halves within 0.10 %). The grid convergence index (Celik et al., 2008) and the time-step study give the numerical uncertainty of each result. On the finest mesh the model predicts a Strouhal number St = 0.251 ± 0.004 and a mean drag coefficient C_D = 1.000 ± 0.004, an rms lift coefficient of 0.766 ± 0.023, and a base pressure coefficient of -1.299 ± 0.017; every difference between the two finest meshes and between the two smallest time steps is below 2 %. The report covers verification only: it bounds the numerical error, not the model error, which would need a comparison with experiments.
 
 ## 2. Introduction
 
@@ -17,7 +17,7 @@ A computed number is only useful with its uncertainty. This project therefore se
 1. **Verification:** are the equations solved accurately? How large are the errors from the mesh, the time step, and the finite averaging time?
 2. **Validation:** are they the right equations? How far are the verified results from experiments, and what causes the difference?
 
-This report answers the first question fully and sets up the second.
+This report answers the first question. The second is outside its scope; section 8 describes the prepared method.
 
 ## 3. Problem
 
@@ -138,18 +138,18 @@ The mesh and time uncertainties are independent and are added in quadrature, U_n
 
 `validation/compare.py` compares each fine-mesh result S with an experimental value D: the comparison error E = S - D, and the validation uncertainty U_val = (U_num² + U_D²)^½, a simplified form of ASME V&V 20 that leaves out the input uncertainty U_input. If |E| ≤ U_val, no model error can be shown at this level of uncertainty; if |E| is larger, the difference is model error.
 
-The experimental values enter `validation/reference_data.csv` only from sources the author has read, each with its location in the source; a test rejects any row without a source. **This step is in progress**, so no comparison is reported here.
+**Not performed.** The method above is implemented and tested, but no experimental values have been added: they enter `validation/reference_data.csv` only from sources the author has read, each with its location in the source, and a test rejects any row without a source. No comparison is therefore reported, and the results of this report should not be read as a statement of how well the model matches real flow.
 
 ## 9. Discussion
 
-The numerical error is small and known: at most 3 % (rms C_L), and below 0.5 % for mean C_D. Any larger difference from experiments will therefore come from the model, not from the numerics. The likely contributions, which no mesh or time-step study can detect because they are the same on every mesh:
+The numerical error is small and known: at most 3 % (rms C_L), and below 0.5 % for mean C_D. Any larger difference from experiments would therefore come from the model, not from the numerics. The likely contributions, which no mesh or time-step study can detect because they are the same on every mesh:
 
 1. **2-D instead of 3-D.** The computed vortices are perfectly coherent along the span; real ones are not. 2-D models usually over-predict mean drag and rms lift for this reason.
 2. **The turbulence model.** SST treats the laminar separating boundary layer as turbulent wherever there is eddy viscosity, which can delay separation.
 3. **Inflow turbulence.** The 1 % set at the inlet decays before it reaches the cylinder; wind tunnels differ, and at this Re the turbulence level shifts separation.
 4. **Blockage.** 5 % blockage without correction speeds up the flow past the cylinder and raises the forces slightly.
 
-The comparison with experiments will show which of these dominate, and how far the verified model can be used: for the shedding frequency, the mean drag, and the fluctuating lift.
+Their size is not estimated here. Only a comparison with experiments can show which of them dominate, and how far the verified model can be used: for the shedding frequency, the mean drag, and the fluctuating lift.
 
 ## 10. Working with an AI agent
 
@@ -167,7 +167,7 @@ Errors made by the agent and caught during the project:
 - 2-D only; URANS with a single turbulence model (k-ω SST).
 - One inflow turbulence level, one domain size, no blockage correction.
 - The input uncertainty U_input is not estimated.
-- Validation against experiments is not yet complete.
+- No validation: the model error, the difference from real flow, is not known.
 - The runs used OpenFOAM v2606 on one machine; another version or core count changes the last digits.
 
 ## 12. Conclusions
@@ -176,7 +176,7 @@ Errors made by the agent and caught during the project:
 2. The fine-mesh results carry a numerical uncertainty of 1.6 % (St), 0.4 % (mean C_D), 3.0 % (rms C_L), and 1.3 % (base C_p); every fine-medium and every smallest-time-step difference is below 2 %.
 3. The verified model predicts St = 0.251 ± 0.004 and mean C_D = 1.000 ± 0.004 at Re = 66,667.
 4. A larger time step (1e-4 s) is stable but misses rms C_L by 5 %: stability does not imply accuracy.
-5. Because the numerical error is small and known, the coming comparison with experiments will measure the model error directly.
+5. Because the numerical error is small and known, a future comparison with experiments would measure the model error directly; `validation/compare.py` is prepared for it.
 
 ## References
 
