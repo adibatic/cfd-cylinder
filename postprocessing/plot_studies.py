@@ -145,8 +145,8 @@ def validation(plt):
 
 def main():
     plt = plt_()
-    convergence(plt, MESHES, "mesh", "gci_mesh.csv", "mesh_study.png")
-    convergence(plt, STEPS, "time", "gci_time.csv", "time_step_study.png")
+    convergence(plt, MESHES, "mesh", "gci_mesh.csv", "mesh_convergence.png")
+    convergence(plt, STEPS, "time", "gci_time.csv", "time_step_convergence.png")
     lift_overlay(plt)
     cp_overlay(plt)
     validation(plt)
