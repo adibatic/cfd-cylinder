@@ -13,7 +13,7 @@
 
 <sub>Vorticity behind the cylinder, medium mesh. Red turns counter-clockwise, blue clockwise. Two shedding periods, looped.</sub>
 
-[Key finding](#key-finding) · [Results](#results-at-a-glance) · [Gallery](#gallery) · [How it works](#how-it-works) · [Report](report/report.md) · [Setup](#setup)
+[Key finding](#key-finding) · [Results](#results-at-a-glance) · [Gallery](#gallery) · [How it works](#how-it-works) · [Report](report/report.md) · [Slides](report/presentation.pdf) · [Setup](#setup)
 
 </div>
 
@@ -343,7 +343,7 @@ source .venv/bin/activate
     validation/       reference data and the comparison
     tests/            pytest checks against exact answers (run: pytest)
     results/          figures, tables, and animations (all committed)
-    report/           final report
+    report/           final report; presentation.pdf, a 9-slide talk for non-specialists
     runs/, media/     OpenFOAM runs and videos (generated, not tracked)
 
 ## References
