@@ -363,7 +363,7 @@ source .venv/bin/activate
     validation/       the comparison with experiments (prepared, not run)
     tests/            pytest checks against exact answers (run: pytest)
     results/          figures, tables, and animations (all committed)
-    report/           final report; presentation.pdf, a 9-slide talk for non-specialists
+    report/           final report; presentation.pdf, a 10-slide talk for non-specialists
     runs/, media/     OpenFOAM runs and videos (generated, not tracked)
 
 ## References
