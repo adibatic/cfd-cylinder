@@ -46,7 +46,7 @@
 <table>
   <tr>
     <td width="50%"><img src="results/figures/mesh_coarse.png" alt="O-grid mesh around the cylinder"><br><sub><b>Mesh.</b> The O-grid near the cylinder, coarse level.</sub></td>
-    <td width="50%"><img src="results/figures/mesh_study.png" alt="Mesh study"><br><sub><b>Mesh study.</b> Three meshes converge toward the extrapolated value.</sub></td>
+    <td width="50%"><img src="results/figures/mesh_study.png" alt="Mesh study"><br><sub><b>Mesh study.</b> Mean drag and St converge steadily toward the extrapolated value; rms lift and base pressure oscillate, within 3 %.</sub></td>
   </tr>
   <tr>
     <td><img src="results/figures/fine_coefficients.png" alt="Drag and lift coefficients on the fine mesh against time"><br><sub><b>Forces.</b> Drag and lift on the fine mesh: the start-up (grey) is discarded, then the shedding is regular.</sub></td>

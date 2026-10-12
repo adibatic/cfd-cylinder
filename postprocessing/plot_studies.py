@@ -58,8 +58,10 @@ def convergence(plt, runs, kind, gci_file, name):
     rows = table.loc[runs[::-1]]                  # finest first
     h = (1 / np.sqrt(rows["cells"].to_numpy())) if kind == "mesh" else rows["dt"].to_numpy()
     h = h / h[0]
-    fig, axes = plt.subplots(1, 4, figsize=(13, 3.2))
-    fig.subplots_adjust(wspace=0.45)               # room for the y tick labels
+    # 2 x 2, close to the 4:3 of the other figures, so it stays readable in the README gallery
+    fig, axes = plt.subplots(2, 2, figsize=(9, 6))
+    fig.subplots_adjust(wspace=0.4, hspace=0.55, top=0.86)  # room for the labels and titles
+    axes = axes.ravel()
     for ax, q in zip(axes, LABEL):
         phi = rows[q].to_numpy()
         ax.plot(h, phi, "-", color="0.6", lw=1, zorder=1)
@@ -75,7 +77,8 @@ def convergence(plt, runs, kind, gci_file, name):
         ax.set_xlabel("h / h_fine" if kind == "mesh" else "Δt / Δt_smallest")
     axes[0].legend(fontsize=8, frameon=False)
     fig.suptitle(("Mesh study" if kind == "mesh" else "Time-step study (medium mesh)")
-                 + ": bar = u_num on the finest, square = extrapolated value (monotonic only)", y=1.04)
+                 + "\nbar = u_num on the finest, square = extrapolated value (monotonic only)",
+                 fontsize=10)
     save(fig, name)
     plt.close(fig)
 
