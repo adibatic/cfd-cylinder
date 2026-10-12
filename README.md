@@ -85,7 +85,7 @@ This project covers verification: are the equations solved correctly? Validation
 
 ## Contents
 
-[Objective](#objective) · [Problem](#problem) · [Method](#method) · [Domain](#domain) · [Mesh](#mesh) · [Baseline run](#baseline-run) · [Forces and shedding](#forces-and-shedding) · [Pressure](#pressure) · [Mesh study](#mesh-study) · [Time-step study](#time-step-study) · [Validation](#validation) · [Discussion](#discussion) · [Future work](#future-work) · [Tools](#tools) · [Setup](#setup) · [Repository layout](#repository-layout) · [References](#references) · [Environment](#environment) · [Agent log](#agent-log) · [Progress](#progress)
+[Objective](#objective) · [Problem](#problem) · [Method](#method) · [Domain](#domain) · [Mesh](#mesh) · [Baseline run](#baseline-run) · [Forces and shedding](#forces-and-shedding) · [Pressure](#pressure) · [Mesh study](#mesh-study) · [Time-step study](#time-step-study) · [Validation](#validation) · [Discussion](#discussion) · [Future work](#future-work) · [Tools](#tools) · [Setup](#setup) · [Repository layout](#repository-layout) · [References](#references) · [License](#license) · [Environment](#environment) · [Agent log](#agent-log) · [Progress](#progress)
 
 ## Objective
 
@@ -93,7 +93,7 @@ This project investigates the accuracy and numerical sensitivity of CFD predicti
 
 ## Problem
 
-A uniform stream of air flows past a stationary circular cylinder. The cylinder is long, so the flow is modelled in 2-D.
+A uniform stream of air flows past a stationary circular cylinder. The cylinder is long, so the flow is modeled in 2-D.
 
 | Symbol | Meaning | Value |
 |---|---|---|
@@ -120,7 +120,7 @@ Time scales: one flow-through of the domain takes 0.35 s, one shedding period ab
 
 ## Method
 
-- **Equations:** incompressible Navier-Stokes (Mach 0.03), Reynolds-averaged in time (URANS). The vortex shedding is resolved in time; small-scale turbulence is modelled with an eddy viscosity.
+- **Equations:** incompressible Navier-Stokes (Mach 0.03), Reynolds-averaged in time (URANS). The vortex shedding is resolved in time; small-scale turbulence is modeled with an eddy viscosity.
 - **Turbulence model:** k-omega SST (Menter 1994). It limits the eddy viscosity in adverse pressure gradients, which is where the flow separates.
 - **Solver:** OpenFOAM `pimpleFoam` (transient, PIMPLE pressure-velocity coupling).
 - **Forces:** pressure and viscous stress integrated over the cylinder every time step (`forceCoeffs`).
@@ -141,7 +141,7 @@ Assumptions and their expected effect:
 
 ## Domain
 
-Cylinder centre at the origin, flow in +x.
+Cylinder center at the origin, flow in +x.
 
     y = +1.0  +----------------------------------------------------+  top (symmetryPlane)
               |                +---------+                         |
@@ -154,8 +154,8 @@ Cylinder centre at the origin, flow in +x.
 | Dimension | Value | In diameters |
 |---|---|---|
 | cylinder diameter D | 0.1 m | 1 |
-| inlet distance from centre | 1.0 m | 10 |
-| outlet distance from centre | 2.5 m | 25 |
+| inlet distance from center | 1.0 m | 10 |
+| outlet distance from center | 2.5 m | 25 |
 | domain half height | 1.0 m | 10 |
 | depth (one cell, 2-D) | 0.01 m | 0.1 |
 | blockage D / height | 5 % | |
@@ -370,6 +370,12 @@ source .venv/bin/activate
 
 - Celik, I. B., Ghia, U., Roache, P. J., Freitas, C. J., Coleman, H., & Raad, P. E. (2008). Procedure for estimation and reporting of uncertainty due to discretization in CFD applications. Journal of Fluids Engineering, 130(7), 078001.
 - Menter, F. R. (1994). Two-equation eddy-viscosity turbulence models for engineering applications. AIAA Journal, 32(8), 1598-1605.
+
+## License
+
+The code, figures, tables, report and slides in this repository are under the
+MIT license (see `LICENSE`). OpenFOAM and ParaView are not included; they are
+installed separately and keep their own licenses (GPL v3 and BSD 3-Clause).
 
 ## Environment
 

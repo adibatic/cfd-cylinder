@@ -29,7 +29,7 @@ DEPTH = 0.01        # one cell thick: 2-D
 LEVELS = {"coarse": 1 / 1.5, "medium": 1.0, "fine": 1.5}
 
 # Medium design: cells per quarter of the cylinder, and for each radial or
-# axial segment (length, first cell, last cell), in metres.
+# axial segment (length, first cell, last cell), in meters.
 NQ = 32
 SEGMENTS = {
     "ring":  (R_RING - R, 5.0e-5, 2.5e-3),     # wall to ring, first cell at the wall

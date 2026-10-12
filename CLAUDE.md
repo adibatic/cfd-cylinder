@@ -16,7 +16,7 @@ postprocessing/, verification/ and validation/, tests in tests/.
 - Mesh: python3 mesh/make_blockmesh.py all
 - Case: scripts/make_case.sh <coarse|medium|fine> [deltaT]
 - Run: scripts/run_case.sh <run> <cores>
-- Analyse: python3 postprocessing/analyze_case.py --run <run> --t-start 0.5
+- Analyze: python3 postprocessing/analyze_case.py --run <run> --t-start 0.5
 - Mesh study: python3 verification/gci.py mesh fine medium coarse
 - Time-step study: python3 verification/gci.py time medium-dt2.5e-5 medium medium-dt1e-4
 - Validate: python3 validation/compare.py --run fine

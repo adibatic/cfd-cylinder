@@ -34,7 +34,7 @@ At this Reynolds number the flow is subcritical: the boundary layer is laminar w
 
 ## 4. Method
 
-- **Equations:** incompressible Navier-Stokes, Reynolds-averaged in time (URANS); the shedding is resolved in time and the small-scale turbulence is modelled with an eddy viscosity.
+- **Equations:** incompressible Navier-Stokes, Reynolds-averaged in time (URANS); the shedding is resolved in time and the small-scale turbulence is modeled with an eddy viscosity.
 - **Turbulence model:** k-ω SST (Menter, 1994), with wall functions (`nutUSpaldingWallFunction`, `omegaWallFunction`) on a mesh with y⁺ of about 1 at the wall.
 - **Solver:** `pimpleFoam` with one outer corrector and two pressure correctors per time step (PISO mode).
 - **Schemes:** second-order backward differencing in time; second-order upwind-biased `linearUpwind` for momentum; `limitedLinear` for k and ω; linear gradients and corrected Laplacians.

@@ -1,7 +1,7 @@
 """Time-averaged pressure coefficient on the cylinder.
 
 Reads the ASCII fields pMean (written by the fieldAverage function object)
-and C (face centres, written by 'postProcess -func writeCellCentres') from
+and C (face centers, written by 'postProcess -func writeCellCentres') from
 the last time directory of a run.
 """
 import re

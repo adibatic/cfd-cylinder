@@ -82,7 +82,7 @@ def main(argv):
     table = pd.read_csv(ROOT / "results" / "tables" / "runs.csv").set_index("run")
     missing = [r for r in runs if r not in table.index]
     if missing:
-        sys.exit(f"not analysed yet: {missing}. Run postprocessing/analyze_case.py first.")
+        sys.exit(f"not analyzed yet: {missing}. Run postprocessing/analyze_case.py first.")
     rows = table.loc[runs]
     if kind == "mesh":
         h = [math.sqrt(AREA / n) for n in rows["cells"]]

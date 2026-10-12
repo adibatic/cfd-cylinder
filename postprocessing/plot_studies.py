@@ -19,7 +19,7 @@ TABLES = ROOT / "results" / "tables"
 FIGS = ROOT / "results" / "figures"
 MESHES = ["coarse", "medium", "fine"]
 STEPS = ["medium-dt1e-4", "medium", "medium-dt2.5e-5"]
-# fixed colour per run, the same in every figure
+# fixed color per run, the same in every figure
 COLOR = {"coarse": "#2a78d6", "medium": "#eb6834", "fine": "#1baf7a",
          "medium-dt1e-4": "#eda100", "medium-dt2.5e-5": "#e87ba4"}
 LABEL = {"Cd_mean": "mean $C_D$", "St": "St", "Cl_rms": "rms $C_L$", "Cp_base": "base $C_p$"}

@@ -4,7 +4,7 @@
 Usage:
     python3 postprocessing/animate_vorticity.py --run medium-anim
 
-Needs the vorticity field in every time folder and the cell centres C in
+Needs the vorticity field in every time folder and the cell centers C in
 one of them: run 'postProcess -func vorticity' in the run folder (C is
 written by scripts/run_case.sh). Writes the last frame to
 results/figures/vorticity_<run>.png and, with ffmpeg, the video
@@ -44,7 +44,7 @@ def time_dirs(run_dir):
 
 
 def triangulation(xy):
-    """Delaunay triangles of the cell centres in the window, without the cylinder."""
+    """Delaunay triangles of the cell centers in the window, without the cylinder."""
     import matplotlib.tri as mtri
 
     tri = mtri.Triangulation(xy[:, 0], xy[:, 1])
@@ -96,7 +96,7 @@ def draw(ax, tri, wz, levels, window):
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--run", required=True)
-    ap.add_argument("--limit", type=float, default=400.0, help="colour range +-limit (1/s)")
+    ap.add_argument("--limit", type=float, default=400.0, help="color range +-limit (1/s)")
     ap.add_argument("--frequency", type=float, help="shedding frequency (Hz); default from runs.csv")
     args = ap.parse_args()
 
@@ -108,8 +108,8 @@ def main():
     times = time_dirs(run_dir)
     if not times:
         raise SystemExit(f"no vorticity in {run_dir}; run the postProcess commands first")
-    centres = next(t / "C" for t in reversed(times) if (t / "C").exists())
-    xyz = read_internal_vectors(centres)
+    centers = next(t / "C" for t in reversed(times) if (t / "C").exists())
+    xyz = read_internal_vectors(centers)
     x0, x1, y0, y1 = WINDOW
     keep = (xyz[:, 0] > x0 - 0.05) & (xyz[:, 0] < x1 + 0.05) & \
            (xyz[:, 1] > y0 - 0.05) & (xyz[:, 1] < y1 + 0.05)

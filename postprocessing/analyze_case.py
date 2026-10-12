@@ -168,7 +168,7 @@ def figures(run, t, cd, cl, t_start, stats, out):
         a.axvspan(t[0], t_start, color="0.9")
         lo, hi = x[late].min(), x[late].max()
         a.set_ylim(lo - 0.1 * (hi - lo), hi + 0.1 * (hi - lo))
-    ax[0].set_title(f"{run}: grey = start-up, discarded")
+    ax[0].set_title(f"{run}: gray = start-up, discarded")
     fig.tight_layout()
     fig.savefig(out / f"{run}_coefficients.png", dpi=150)
     plt.close(fig)
