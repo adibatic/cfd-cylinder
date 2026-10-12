@@ -85,7 +85,7 @@ This project covers verification: are the equations solved correctly? Validation
 
 ## Contents
 
-[Objective](#objective) · [Problem](#problem) · [Method](#method) · [Domain](#domain) · [Mesh](#mesh) · [Baseline run](#baseline-run) · [Forces and shedding](#forces-and-shedding) · [Pressure](#pressure) · [Mesh study](#mesh-study) · [Time-step study](#time-step-study) · [Validation](#validation) · [Discussion](#discussion) · [Tools](#tools) · [Setup](#setup) · [Repository layout](#repository-layout) · [References](#references) · [Environment](#environment) · [Agent log](#agent-log) · [Progress](#progress)
+[Objective](#objective) · [Problem](#problem) · [Method](#method) · [Domain](#domain) · [Mesh](#mesh) · [Baseline run](#baseline-run) · [Forces and shedding](#forces-and-shedding) · [Pressure](#pressure) · [Mesh study](#mesh-study) · [Time-step study](#time-step-study) · [Validation](#validation) · [Discussion](#discussion) · [Future work](#future-work) · [Tools](#tools) · [Setup](#setup) · [Repository layout](#repository-layout) · [References](#references) · [Environment](#environment) · [Agent log](#agent-log) · [Progress](#progress)
 
 ## Objective
 
@@ -301,6 +301,25 @@ Once reference data are added:
 
 **What the verification does not cover.** The model errors are not bounded by these studies, because they are the same on every mesh: the 2-D simplification (2-D URANS tends to over-predict mean drag and rms lift, because the shed vortices are perfectly coherent along the span), the turbulence model treating the laminar separating boundary layer as turbulent, the decay of the inflow turbulence before it reaches the cylinder, and 5 % blockage without correction. Only a comparison with experiments can show how large they are and which dominates.
 
+## Future work
+
+In order of value, most useful first:
+
+1. **Validation.** Add experimental values for C_D, St, rms C_L and base C_p at a similar Reynolds number to `validation/reference_data.csv`, from sources I have read, and run `validation/compare.py`. Estimate the input uncertainty U_input (inflow turbulence, fluid properties) as well. This measures the model error that the verification cannot.
+2. **A real structure.** Apply the forces to an actual pole, chimney or cable:
+   - choose one with known height, diameter, material, wall thickness and base fixing;
+   - find its natural frequency from a structural-dynamics reference or a modal analysis;
+   - compare it with the shedding frequency f = St U / D over the range of wind speeds it will see, to find the wind speeds where the two match;
+   - check the result against the vortex-shedding method of a design code (for example EN 1991-1-4, Annex E).
+3. **A moving cylinder.** This project holds the cylinder fixed, so it cannot show vibration amplitude or lock-in, where the shedding follows the structure's motion over a band of wind speeds. That needs fluid-structure interaction: a cylinder on springs and dampers, with a moving mesh in OpenFOAM or a coupled structural solver.
+4. **Model fidelity.** The model errors listed in the Discussion, each tested on its own:
+   - a 3-D domain several diameters long in the span direction, so the shed vortices can lose coherence;
+   - scale-resolving simulation (DES or LES) instead of URANS;
+   - other turbulence models, including a transition-sensitive one, since the separating boundary layer is laminar at this Re;
+   - a larger domain or a blockage correction.
+5. **Wider conditions.** Several wind speeds (a Reynolds-number sweep within the subcritical regime), different inflow turbulence levels, and surface roughness.
+6. **Reducing the vibration.** Once validated, compare designs that disrupt the shedding, such as helical strakes; these need the 3-D model.
+
 ## Tools
 
 - OpenFOAM
@@ -398,7 +417,7 @@ Self-paced. Target: the whole project in about two weeks.
 - [x] Milestone 4: First flow. The baseline case runs and sheds vortices.
 - [x] Milestone 5: Measurement. C_D, C_L, St, and C_p come from tested code with convergence checks.
 - [x] Milestone 6: Verification. Mesh and time-step studies give the numerical uncertainty.
-- [ ] Milestone 7: Validation. Not part of this version; the comparison tool is prepared for future work.
+- [ ] Milestone 7: Validation. Not part of this version; the comparison tool is prepared (see [Future work](#future-work)).
 - [ ] Milestone 8: Package the result. Figures, animation, report, and v1.0 release.
 
 </details>

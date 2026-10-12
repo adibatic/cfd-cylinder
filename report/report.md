@@ -170,7 +170,18 @@ Errors made by the agent and caught during the project:
 - No validation: the model error, the difference from real flow, is not known.
 - The runs used OpenFOAM v2606 on one machine; another version or core count changes the last digits.
 
-## 12. Conclusions
+## 12. Future work
+
+The steps below would extend the project, in order of value.
+
+1. **Validation.** Add experimental values for C_D, St, rms C_L and base C_p at a similar Reynolds number, from sources the author has read, run `validation/compare.py`, and estimate the input uncertainty U_input. This would measure the model error that section 7 cannot.
+2. **Application to a real structure.** Choose a real pole, chimney or cable with known dimensions, material and fixing; find its natural frequency from a structural-dynamics reference or a modal analysis; and compare it with the shedding frequency f = St U / D over the wind speeds the structure will see. The wind speeds where the two match are where vortex-induced vibration is possible. A design code's vortex-shedding method (for example EN 1991-1-4, Annex E) gives an independent check.
+3. **A moving cylinder.** The cylinder here is rigid and fixed, so the vibration amplitude and lock-in, the shedding following the structure's motion over a band of wind speeds, are out of reach. They need fluid-structure interaction: a cylinder on springs and dampers, solved with a moving mesh or a coupled structural solver.
+4. **Model fidelity.** Test each model error of section 9 on its own: a 3-D domain several diameters long in the span direction; scale-resolving simulation (DES or LES); other turbulence models, including a transition-sensitive one; and a larger domain or a blockage correction.
+5. **Wider conditions.** A Reynolds-number sweep within the subcritical regime, other inflow turbulence levels, and surface roughness.
+6. **Reducing the vibration.** Once the model is validated, compare designs that disrupt the shedding, such as helical strakes; these need the 3-D model.
+
+## 13. Conclusions
 
 1. On three systematically refined meshes, St and mean C_D converge monotonically: St at an observed order of 1.9, close to the schemes' formal second order.
 2. The fine-mesh results carry a numerical uncertainty of 1.6 % (St), 0.4 % (mean C_D), 3.0 % (rms C_L), and 1.3 % (base C_p); every fine-medium and every smallest-time-step difference is below 2 %.
