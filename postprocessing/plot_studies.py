@@ -59,6 +59,7 @@ def convergence(plt, runs, kind, gci_file, name):
     h = (1 / np.sqrt(rows["cells"].to_numpy())) if kind == "mesh" else rows["dt"].to_numpy()
     h = h / h[0]
     fig, axes = plt.subplots(1, 4, figsize=(13, 3.2))
+    fig.subplots_adjust(wspace=0.45)               # room for the y tick labels
     for ax, q in zip(axes, LABEL):
         phi = rows[q].to_numpy()
         ax.plot(h, phi, "-", color="0.6", lw=1, zorder=1)

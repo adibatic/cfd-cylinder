@@ -9,9 +9,9 @@
 ![Python](https://img.shields.io/badge/Python-3.10-3776ab?logo=python&logoColor=white)
 ![Re](https://img.shields.io/badge/Re-66%2C667-555555)
 
-<img src="results/animations/vorticity_medium-anim.gif" width="800" alt="Vorticity behind the cylinder: vortices shed alternately from the top and bottom">
+<img src="results/figures/vorticity_medium_strip.png" width="800" alt="Vorticity behind the cylinder: vortices shed alternately from the top and bottom">
 
-<sub>Vorticity behind the cylinder, medium mesh. Red turns counter-clockwise, blue clockwise. Two shedding periods, looped.</sub>
+<sub>Vorticity behind the cylinder, medium mesh. Red turns counter-clockwise, blue clockwise.</sub>
 
 [Key finding](#key-finding) · [Results](#results-at-a-glance) · [Gallery](#gallery) · [How it works](#how-it-works) · [Report](report/report.md) · [Slides](report/presentation.pdf) · [Setup](#setup)
 
@@ -49,11 +49,11 @@
     <td width="50%"><img src="results/figures/mesh_study.png" alt="Mesh study"><br><sub><b>Mesh study.</b> Three meshes converge toward the extrapolated value.</sub></td>
   </tr>
   <tr>
-    <td><img src="results/figures/cl_three_meshes.png" alt="Lift coefficient on three meshes"><br><sub><b>Lift.</b> The lift coefficient on three meshes: same amplitude and period.</sub></td>
+    <td><img src="results/figures/fine_coefficients.png" alt="Drag and lift coefficients on the fine mesh against time"><br><sub><b>Forces.</b> Drag and lift on the fine mesh: the start-up (grey) is discarded, then the shedding is regular.</sub></td>
     <td><img src="results/figures/medium_spectrum.png" alt="Spectrum of the lift coefficient"><br><sub><b>Shedding frequency.</b> The peak of the lift spectrum gives St.</sub></td>
   </tr>
   <tr>
-    <td><img src="results/figures/cp_three_meshes.png" alt="Pressure coefficient around the cylinder"><br><sub><b>Pressure.</b> The mean pressure coefficient around the cylinder, against potential flow.</sub></td>
+    <td><img src="results/figures/fine_cp.png" alt="Pressure coefficient around the cylinder"><br><sub><b>Pressure.</b> The mean pressure coefficient around the cylinder, fine mesh.</sub></td>
     <td><img src="results/figures/k_medium_paraview.png" alt="Turbulent kinetic energy behind the cylinder"><br><sub><b>Turbulence.</b> Turbulent kinetic energy, made in the shear layers and carried down the wake.</sub></td>
   </tr>
 </table>
